@@ -20,7 +20,7 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("redirect to meals");
         MealsUtil mu = new MealsUtil();
-        request.setAttribute("meals", filteredByStreams(mu.findAll(), LocalTime.MIN, LocalTime.MAX, mu.CALORIES_PER_DAY));
+        request.setAttribute("mealsTo", filteredByStreams(mu.findAll(), LocalTime.MIN, LocalTime.MAX, mu.CALORIES_PER_DAY));
         request.getRequestDispatcher("meals.jsp").forward(request, response);
     }
 }
