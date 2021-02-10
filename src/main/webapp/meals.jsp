@@ -12,6 +12,7 @@
 
 <table class="table">
     <tr>
+        <th>Id</th>
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
@@ -19,6 +20,7 @@
 
     <c:forEach var="meals" items="${mealsTo}">
     <tr style="color: ${meals.excess ? 'red' : 'green'}">
+        <td><c:out value="${meals.id}" /></td>
         <td><c:out value="${localDateTimeFormatter.format(meals.dateTime)}" /></td>
         <td><c:out value="${meals.description}" /></td>
         <td><c:out value="${meals.calories}" /></td>
