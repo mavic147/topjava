@@ -6,13 +6,13 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealDao implements AbstractMealDao<Meal, Integer> {
-    private AtomicInteger id = new AtomicInteger(0);
+    private static AtomicInteger id = new AtomicInteger(0);
 
-    List<Meal> meals = Arrays.asList(
+
+    private List<Meal> meals = Arrays.asList(
             new Meal(id.incrementAndGet(), LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
             new Meal(id.incrementAndGet(), LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
             new Meal(id.incrementAndGet(), LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500),
@@ -28,12 +28,26 @@ public class MealDao implements AbstractMealDao<Meal, Integer> {
     }
 
     @Override
-    public Optional<Meal> findById(int id) {
-        return Optional.empty();
+    public Meal findById(int id) {
+        return meals.stream().filter(meal -> meal.getId() == id).findAny().orElse(null);
     }
 
     @Override
-    public void deleteById() {
+    public void deleteById(int id) {
+        meals.removeIf(meal -> meal.getId() == id);
+    }
 
+    @Override
+    public void update(int id, Meal newMeal) {
+        Meal mealToUpdate = findById(id);
+        mealToUpdate.setDateTime(newMeal.getDateTime());
+        mealToUpdate.setDescription(newMeal.getDescription());
+        mealToUpdate.setCalories(newMeal.getCalories());
+    }
+
+    @Override
+    public void add(Meal meal) {
+        meal.setId(id.incrementAndGet());
+        meals.add(meal);
     }
 }

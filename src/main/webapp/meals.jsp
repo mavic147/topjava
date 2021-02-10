@@ -11,11 +11,13 @@
 <h2>Meals</h2>
 
 <table class="table">
+
     <tr>
         <th>Id</th>
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
+        <th colspan=2>Actions</th>
     </tr>
 
     <c:forEach var="meals" items="${mealsTo}">
@@ -24,10 +26,15 @@
         <td><c:out value="${localDateTimeFormatter.format(meals.dateTime)}" /></td>
         <td><c:out value="${meals.description}" /></td>
         <td><c:out value="${meals.calories}" /></td>
+        <td style="color: ${'blue'}"><a href="/update&id=<c:out value="${meals.id}"/>">Update</a></td>
+        <td style="color: ${'blue'}"><a href="/delete&id=<c:out value="${meals.id}"/>">Delete</a></td>
     </tr>
     </c:forEach>
 
 </table>
+
+<hr>
+<a href="/new">Add Meal</a>
 
 </body>
 </html>

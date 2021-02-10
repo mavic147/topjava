@@ -1,12 +1,17 @@
 package ru.javawebinar.topjava.dao;
 
+import ru.javawebinar.topjava.model.Meal;
+
 import java.util.List;
-import java.util.Optional;
 
 public interface AbstractMealDao<E, Integer> {
     List<E> findAll();
 
-    Optional<E> findById(int id);
+    Meal findById(int id);
 
-    void deleteById();
+    void deleteById(int id);
+
+    void update(int id, E e);
+
+    void add(E e);
 }
