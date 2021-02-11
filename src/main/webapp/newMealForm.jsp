@@ -11,7 +11,7 @@
     <form action="meals?action=update&id=${meals.id}" method="post">
         </c:if>
         <c:if test="${meal == null}">
-        <form action="meals?action=create" method="post">
+        <form action="meals" method="post">
             </c:if>
             <table border="1" cellpadding="5">
                 <caption>
