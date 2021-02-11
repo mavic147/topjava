@@ -23,24 +23,27 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getServletPath();
-//        String action = request.getParameter("action");
-        log.debug("redirect to meals");
+//        String action = request.getServletPath();
+        String action = request.getParameter("action");
 
-        switch(action) {
-            case "/create":
+        switch(action == null ? "all" : action) {
+            case "create":
+                log.debug("creating a meal");
                 showCreateForm(request, response);
                 break;
-            case "/update":
+            case "update":
+                log.debug("updating a  meals");
                 showUpdateForm(request, response);
                 break;
-            case "/delete":
+            case "delete":
+                log.debug("deleting a meal");
                 delete(request, response);
                 break;
-            case "/get":
-                showMealById(request, response);
-                break;
-            default:
+//            case "get":
+//                showMealById(request, response);
+//                break;
+            case "all":
+                log.debug("redirect to meals");
                 listMeals(request, response);
                 break;
         }
@@ -65,24 +68,26 @@ public class MealServlet extends HttpServlet {
 
     private void showUpdateForm(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
+        //Здесь падает при сохранении объекта
         int id = Integer.parseInt(request.getParameter("id"));
         Meal existingMeal = mealDao.findById(id);
         request.setAttribute("meal", existingMeal);
-        response.sendRedirect("/meals.jsp");
+        request.getRequestDispatcher("newMealForm.jsp").forward(request,response);
     }
 
     private void delete(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
+        //здесь падает при удалении объекта UnsupportedOperationException: remove
         mealDao.deleteById(id);
         response.sendRedirect("/meals.jsp");
     }
 
-    private void showMealById(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        request.setAttribute("meal", mealDao.findById(id));
-        request.setAttribute("localDateTimeFormatter", dateTimeFormatter);
-        request.getRequestDispatcher("mealId.jsp").forward(request, response);
-    }
+//    private void showMealById(HttpServletRequest request, HttpServletResponse response)
+//            throws IOException, ServletException {
+//        int id = Integer.parseInt(request.getParameter("id"));
+//        request.setAttribute("meal", mealDao.findById(id));
+//        request.setAttribute("localDateTimeFormatter", dateTimeFormatter);
+//        request.getRequestDispatcher("mealId.jsp").forward(request, response);
+//    }
 }

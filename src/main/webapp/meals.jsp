@@ -28,8 +28,8 @@
         <td><c:out value="${meals.calories}" /></td>
 <%--        <td style="color: ${'blue'}"><a href="meals/update?id=<c:out value="${meals.id}"/>">Update</a></td>--%>
 <%--        <td style="color: ${'blue'}"><a href="meals/delete?id=<c:out value="${meals.id}"/>">Delete</a></td>--%>
-        <td style="color: ${'blue'}"><a href="newMealForm.jsp?action=update?id=<c:out value="${meals.id}"/>">Update</a></td>
-        <td style="color: ${'blue'}"><a href="meals?action=delete?id=<c:out value="${meals.id}"/>">Delete</a></td>
+        <td style="color: ${'blue'}"><a href="meals?action=update&id=<c:out value="${meals.id}"/>">Update</a></td>
+        <td style="color: ${'blue'}"><a href="meals?action=delete&id=<c:out value="${meals.id}"/>">Delete</a></td>
 
     </tr>
     </c:forEach>
@@ -38,7 +38,7 @@
 
 <hr>
 <%--<a href="meals/new">Add Meal</a>--%>
-<a href="newMealForm.jsp?action=create">Add Meal</a>
+<a href="meals?action=create">Add Meal</a>
 
 </body>
 </html>
