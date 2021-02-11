@@ -8,10 +8,10 @@
 <body>
 <div align="center">
     <c:if test="${meal != null}">
-    <form action="update" method="post">
+    <form action="meals?action=update&id=${meals.id}" method="post">
         </c:if>
         <c:if test="${meal == null}">
-        <form action="insert" method="post">
+        <form action="meals?action=create" method="post">
             </c:if>
             <table border="1" cellpadding="5">
                 <caption>
@@ -25,7 +25,7 @@
                     </h2>
                 </caption>
                 <c:if test="${meal != null}">
-                    <input type="hidden" name="id" value="<c:out value='${book.id}' />" />
+                    <input type="hidden" name="id" value="<c:out value='${meal.id}' />" />
                 </c:if>
                 <tr>
                     <th>DateTime: </th>
@@ -52,12 +52,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="center">
+                    <td align="center">
                         <input type="submit" value="Save" />
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="center">
+                    <td align="center">
                         <input type="reset" value="Cancel" />
                     </td>
                 </tr>

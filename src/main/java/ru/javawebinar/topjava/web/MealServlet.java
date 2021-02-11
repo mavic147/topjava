@@ -24,19 +24,20 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getServletPath();
+//        String action = request.getParameter("action");
         log.debug("redirect to meals");
 
         switch(action) {
-            case "meals/new":
+            case "/create":
                 showCreateForm(request, response);
                 break;
-            case "meals/update":
+            case "/update":
                 showUpdateForm(request, response);
                 break;
-            case "meals/delete":
+            case "/delete":
                 delete(request, response);
                 break;
-            case "meals/get":
+            case "/get":
                 showMealById(request, response);
                 break;
             default:
@@ -67,14 +68,14 @@ public class MealServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         Meal existingMeal = mealDao.findById(id);
         request.setAttribute("meal", existingMeal);
-        request.getRequestDispatcher("newMealForm.jsp").forward(request, response);
+        response.sendRedirect("/meals.jsp");
     }
 
     private void delete(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         mealDao.deleteById(id);
-        request.getRequestDispatcher("meals.jsp").forward(request, response);
+        response.sendRedirect("/meals.jsp");
     }
 
     private void showMealById(HttpServletRequest request, HttpServletResponse response)

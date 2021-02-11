@@ -26,15 +26,19 @@
         <td><c:out value="${localDateTimeFormatter.format(meals.dateTime)}" /></td>
         <td><c:out value="${meals.description}" /></td>
         <td><c:out value="${meals.calories}" /></td>
-        <td style="color: ${'blue'}"><a href="/update&id=<c:out value="${meals.id}"/>">Update</a></td>
-        <td style="color: ${'blue'}"><a href="/delete&id=<c:out value="${meals.id}"/>">Delete</a></td>
+<%--        <td style="color: ${'blue'}"><a href="meals/update?id=<c:out value="${meals.id}"/>">Update</a></td>--%>
+<%--        <td style="color: ${'blue'}"><a href="meals/delete?id=<c:out value="${meals.id}"/>">Delete</a></td>--%>
+        <td style="color: ${'blue'}"><a href="newMealForm.jsp?action=update?id=<c:out value="${meals.id}"/>">Update</a></td>
+        <td style="color: ${'blue'}"><a href="meals?action=delete?id=<c:out value="${meals.id}"/>">Delete</a></td>
+
     </tr>
     </c:forEach>
 
 </table>
 
 <hr>
-<a href="/new">Add Meal</a>
+<%--<a href="meals/new">Add Meal</a>--%>
+<a href="newMealForm.jsp?action=create">Add Meal</a>
 
 </body>
 </html>
