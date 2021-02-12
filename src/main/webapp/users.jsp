@@ -17,7 +17,6 @@
     </tr>
     </thead>
     <c:forEach items="${users}" var="user">
-        <jsp:useBean id="user" type="ru.javawebinar.topjava.model.User"/>
         <tr>
             <td>${user.name}</td>
             <td>${user.email}</td>
