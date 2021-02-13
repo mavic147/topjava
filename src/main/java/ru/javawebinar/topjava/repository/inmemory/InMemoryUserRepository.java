@@ -11,6 +11,7 @@ import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Repository
@@ -20,12 +21,12 @@ public class InMemoryUserRepository implements UserRepository {
     private final int id = SecurityUtil.authUserId();
 
     {
-        userRepo.put(id, new User(id, "Peter", "peter@gmail.com", "peter123", Role.USER));
-        userRepo.put(id, new User(id, "Anna", "anna@gmail.com", "anna123", Role.USER));
-        userRepo.put(id, new User(id, "Nicholas", "nic@gmail.com", "nic123", Role.USER));
-        userRepo.put(id, new User(id, "Clementine", "clem@gmail.com", "clem123", Role.USER));
-        userRepo.put(id, new User(id, "Sean", "sean@gmail.com", "sean123", Role.USER));
-        userRepo.put(id, new User(id, "Samantha", "samantha@gmail.com", "sam123", Role.USER));
+        this.save(new User(id, "Peter", "peter@gmail.com", "peter123", Role.USER));
+        this.save(new User(id, "Anna", "anna@gmail.com", "anna123", Role.USER));
+        this.save(new User(id, "Nicholas", "nic@gmail.com", "nic123", Role.USER));
+        this.save(new User(id, "Clementine", "clem@gmail.com", "clem123", Role.USER));
+        this.save(new User(id, "Sean", "sean@gmail.com", "sean123", Role.USER));
+        this.save(new User(id, "Samantha", "samantha@gmail.com", "sam123", Role.USER));
     }
 
     @Override
@@ -50,8 +51,10 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         log.info("getAll");
-        return userRepo.entrySet().stream().map(userRepo::get).sorted(Comparator.comparing(AbstractNamedEntity::getName))
+        return userRepo.values().stream().sorted(Comparator.comparing(AbstractNamedEntity::getName))
                 .collect(Collectors.toList());
+//        return userRepo.values().stream().sorted()
+//                .collect(Collectors.toList());
     }
 
     @Override
