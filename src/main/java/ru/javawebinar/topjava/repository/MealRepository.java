@@ -4,6 +4,7 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface MealRepository {
     // null if updated meal do not belong to userId
@@ -13,7 +14,7 @@ public interface MealRepository {
     boolean delete(int id);
 
     // null if meal do not belong to userId
-    Meal get(int id);
+    Optional<Meal> get(int id);
 
     // ORDERED dateTime desc
     List<Meal> getAll();
