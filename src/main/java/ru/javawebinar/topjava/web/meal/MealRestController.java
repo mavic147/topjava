@@ -9,17 +9,17 @@ import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 public class MealRestController extends AbstractMealController {
 
     @Override
-    public Meal get(int id) {
-        return super.get(authUserId());
+    public Meal get(int id, int userId) {
+        return super.get(id, authUserId());
     }
 
     @Override
-    public void update(Meal meal, int id) {
-        super.update(meal, authUserId());
+    public void update(Meal meal, int id, int userId) {
+        super.update(meal, id, authUserId());
     }
 
     @Override
-    public void delete(int id) {
-        super.delete(authUserId());
+    public void delete(int id, int userId) {
+        super.delete(id, authUserId());
     }
 }

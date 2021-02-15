@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,13 +21,14 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal) {
-        if (meal.getUserId() == SecurityUtil.authUserId()) {
-            if (meal.isNew()) {
-                meal.setId(counter.incrementAndGet());
-                repository.put(meal.getId(), meal);
-                return meal;
-            }
-            // handle case: update, but not present in storage
+        meal.setId(counter.incrementAndGet());
+        repository.put(meal.getId(), meal);
+        return meal;
+    }
+
+    @Override
+    public Meal update(Meal meal, int userId) {
+        if (meal.getUserId() == userId) {
             return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
         } else {
             return null;
@@ -36,20 +36,20 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public boolean delete(int id) {
-        return repository.get(id).getUserId() == SecurityUtil.authUserId() && repository.remove(id) != null;
+    public boolean delete(int id, int userId) {
+        return repository.get(id).getUserId() == userId && repository.remove(id) != null;
     }
 
     @Override
-    public Meal get(int id) {
-        return repository.values().stream().filter(meal -> meal.getUserId() == SecurityUtil.authUserId())
+    public Meal get(int id, int userId) {
+        return repository.values().stream().filter(meal -> meal.getUserId() == userId)
                 .filter(meal -> meal.getId() == id).findFirst().orElse(null);
     }
 
     @Override
     public List<Meal> getAll() {
-        return repository.values().stream().filter(meal -> meal.getUserId() == SecurityUtil.authUserId())
-                .sorted((prevMeal, curMeal) -> curMeal.getDateTime().compareTo(prevMeal.getDateTime()))
+        return repository.values().stream()
+                .sorted((prevMeal, curMeal) -> curMeal.getDate().compareTo(prevMeal.getDate()))
                 .collect(Collectors.toList());
     }
 }
