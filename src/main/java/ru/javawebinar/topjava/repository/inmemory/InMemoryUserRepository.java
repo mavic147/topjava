@@ -12,6 +12,7 @@ import ru.javawebinar.topjava.web.SecurityUtil;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Repository
@@ -19,6 +20,7 @@ public class InMemoryUserRepository implements UserRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
     public static Map<Integer, User> userRepo = new ConcurrentHashMap<>();
     private final int id = SecurityUtil.authUserId();
+    private final AtomicInteger counter = new AtomicInteger(0);
 
     {
         this.save(new User(id, "Peter", "peter@gmail.com", "peter123", Role.USER));
@@ -31,26 +33,28 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public boolean delete(int id) {
-        log.info("delete {}", id);
         return userRepo.remove(id) != null;
     }
 
     @Override
     public User save(User user) {
-        log.info("save {}", user);
-        userRepo.put(id, user);
-        return user;
+        //creates new user
+        if (user.isNew()) {
+            user.setId(counter.incrementAndGet());
+            userRepo.put(id, user);
+            return user;
+        }
+        //updates existing user
+        return userRepo.computeIfPresent(user.getId(), (id, oldUser) -> user);
     }
 
     @Override
     public User get(int id) {
-        log.info("get {}", id);
         return userRepo.get(id);
     }
 
     @Override
     public List<User> getAll() {
-        log.info("getAll");
         return userRepo.values().stream().sorted(Comparator.comparing(AbstractNamedEntity::getName))
                 .collect(Collectors.toList());
 //        return userRepo.values().stream().sorted()
@@ -59,7 +63,6 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public User getByEmail(String email) {
-        log.info("getByEmail {}", email);
 //        return email != null ? userRepo.entrySet().stream().filter(user -> user.getValue().getEmail().equals(email))
 //                .findFirst().get().getValue() : null ;
         return userRepo.values().stream().filter(user -> user.getEmail().equals(email))
