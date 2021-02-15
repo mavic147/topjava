@@ -10,6 +10,7 @@ import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
@@ -22,16 +23,21 @@ public class SpringMain {
 //            AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
 //            adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
 
-            MealRestController mrc = appCtx.getBean(MealRestController.class);
-            System.out.println(mrc.getAll());
-            System.out.println(mrc.get(3, 1));
-            System.out.println(mrc.get(3, 2));
-            System.out.println(mrc.create(new Meal(1, LocalDateTime.of(2021, Month.FEBRUARY, 15,  14, 0), "Обед", 650)));
-            mrc.update(mrc.get(4, 1), 4, 1);
-            System.out.println(mrc.getAll());
-            mrc.delete(5, 1);
-            mrc.delete(5, 2);
-            System.out.println(mrc.getAll());
+//            MealRestController mrc = appCtx.getBean(MealRestController.class);
+//            System.out.println(mrc.getAll());
+//            System.out.println(mrc.get(3, 1));
+//            System.out.println(mrc.get(3, 2));
+//            mrc.get(10, 1);
+//            System.out.println(mrc.create(new Meal(1, LocalDateTime.of(2021, Month.FEBRUARY, 15,  14, 0), "Обед", 650)));
+//            System.out.println(mrc.getAll());
+//            mrc.delete(5, 1);
+//            mrc.update(new Meal(1,LocalDateTime.of(2021, Month.FEBRUARY, 15,  14, 0), "ОБЕД!!!", 800), 7, 1);
+//            mrc.update(new Meal(1,LocalDateTime.of(2021, Month.FEBRUARY, 15,  14, 0), "ОБЕД!!!", 800), 7, 2);
+//            mrc.update(new Meal(1,LocalDateTime.of(2021, Month.FEBRUARY, 15,  14, 0), "ОБЕД!!!", 800), 10, 1);
+//            mrc.delete(5, 2);
+//            mrc.delete(7, 2);
+//            mrc.update(new Meal(1,LocalDateTime.of(2021, Month.FEBRUARY, 15,  14, 0), "ОБЕД!!!", 800), 5, 1);
+//            System.out.println(mrc.getAll(null, null));
         }
     }
 }

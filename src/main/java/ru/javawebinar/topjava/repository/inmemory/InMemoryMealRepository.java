@@ -49,7 +49,7 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public List<Meal> getAll() {
         return repository.values().stream()
-                .sorted((prevMeal, curMeal) -> curMeal.getDate().compareTo(prevMeal.getDate()))
+                .sorted((prevMeal, curMeal) -> curMeal.getDateTime().compareTo(prevMeal.getDateTime()))
                 .collect(Collectors.toList());
     }
 }
