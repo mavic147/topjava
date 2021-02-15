@@ -39,9 +39,9 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public Optional<Meal> get(int id) {
+    public Meal get(int id) {
         return repository.values().stream().filter(meal -> meal.getUserId() == SecurityUtil.authUserId())
-                .filter(meal -> meal.getId() == id).findFirst();
+                .filter(meal -> meal.getId() == id).findFirst().orElse(null);
     }
 
     @Override
