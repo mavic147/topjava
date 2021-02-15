@@ -33,7 +33,7 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public boolean delete(int id) {
-        return userRepo.remove(id) != null;
+        return userRepo.get(id) != null && userRepo.remove(id) != null;
     }
 
     @Override
@@ -45,12 +45,12 @@ public class InMemoryUserRepository implements UserRepository {
             return user;
         }
         //updates existing user
-        return userRepo.computeIfPresent(user.getId(), (id, oldUser) -> user);
+        return user.getId() != null ? userRepo.computeIfPresent(user.getId(), (id, oldUser) -> user) : null;
     }
 
     @Override
     public User get(int id) {
-        return userRepo.get(id);
+        return userRepo.values().stream().filter(user -> user.getId() == id).findFirst().orElse(null);
     }
 
     @Override
