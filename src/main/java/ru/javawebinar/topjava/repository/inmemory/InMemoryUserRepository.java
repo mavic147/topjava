@@ -17,18 +17,16 @@ import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
-    private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
     public static Map<Integer, User> userRepo = new ConcurrentHashMap<>();
-    private final int id = SecurityUtil.authUserId();
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        this.save(new User(id, "Peter", "peter@gmail.com", "peter123", Role.USER));
-        this.save(new User(id, "Anna", "anna@gmail.com", "anna123", Role.USER));
-        this.save(new User(id, "Nicholas", "nic@gmail.com", "nic123", Role.USER));
-        this.save(new User(id, "Clementine", "clem@gmail.com", "clem123", Role.USER));
-        this.save(new User(id, "Sean", "sean@gmail.com", "sean123", Role.USER));
-        this.save(new User(id, "Samantha", "samantha@gmail.com", "sam123", Role.USER));
+        this.save(new User(counter.incrementAndGet(), "Peter", "peter@gmail.com", "peter123", Role.USER));
+        this.save(new User(counter.incrementAndGet(), "Anna", "anna@gmail.com", "anna123", Role.USER));
+        this.save(new User(counter.incrementAndGet(), "Nicholas", "nic@gmail.com", "nic123", Role.USER));
+        this.save(new User(counter.incrementAndGet(), "Clementine", "clem@gmail.com", "clem123", Role.USER));
+        this.save(new User(counter.incrementAndGet(), "Sean", "sean@gmail.com", "sean123", Role.USER));
+        this.save(new User(counter.incrementAndGet(), "Samantha", "samantha@gmail.com", "sam123", Role.USER));
     }
 
     @Override
@@ -41,7 +39,7 @@ public class InMemoryUserRepository implements UserRepository {
         //creates new user
         if (user.isNew()) {
             user.setId(counter.incrementAndGet());
-            userRepo.put(id, user);
+            userRepo.put(counter.incrementAndGet(), user);
             return user;
         }
         //updates existing user
