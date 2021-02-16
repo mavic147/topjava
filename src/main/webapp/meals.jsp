@@ -23,6 +23,31 @@
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
+
+    <section>
+    <form method="post" action="meals">
+        <dl>
+            <dt>From date(incl):</dt>
+            <dd><input type="date" name="startDate"></dd>
+        </dl>
+        <dl>
+            <dt>To date(incl):</dt>
+            <dd><input type="date" name="endDate"></dd>
+        </dl>
+        <dl>
+            <dt>From time(incl):</dt>
+            <dd><input type="time" name="startTime"></dd>
+        </dl>
+        <dl>
+            <dt>To time(excl):</dt>
+            <dd><input type="time" name="endTime"></dd>
+        </dl>
+        <button type="submit">Filter</button>
+        <button onclick="window.history.back()" type="button">Cancel</button>
+    </form>
+    </section>
+
+    <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
