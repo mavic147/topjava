@@ -8,6 +8,7 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
+import ru.javawebinar.topjava.web.user.ProfileRestController;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -20,8 +21,15 @@ public class SpringMain {
         // java 7 automatic resource management (ARM)
         try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
 //            System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
-//            AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
-//            adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
+            AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
+            adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
+            ProfileRestController prc = appCtx.getBean(ProfileRestController.class);
+            System.out.println(prc.getAll());
+//            prc.delete(3);
+//            prc.update(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN), 4);
+//            prc.update(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN), 3);
+//            System.out.println(prc.get(2));
+
 
 //            MealRestController mrc = appCtx.getBean(MealRestController.class);
 //            System.out.println(mrc.getAll());
