@@ -21,14 +21,19 @@ public class SpringMain {
         // java 7 automatic resource management (ARM)
         try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
 //            System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
-            AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
-            adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
-            ProfileRestController prc = appCtx.getBean(ProfileRestController.class);
-            System.out.println(prc.getAll());
+//            AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
+//            adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
+//            ProfileRestController prc = appCtx.getBean(ProfileRestController.class);
+//            System.out.println(prc.getAll());
 //            prc.delete(3);
+//            prc.delete(3);
+//            System.out.println(prc.get(2));
+//            System.out.println(prc.getByMail("email@mail.ru"));
+//            System.out.println(prc.getByMail("jhgf"));
 //            prc.update(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN), 4);
 //            prc.update(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN), 3);
-//            System.out.println(prc.get(2));
+//            System.out.println(prc.getAll());
+
 
 
 //            MealRestController mrc = appCtx.getBean(MealRestController.class);

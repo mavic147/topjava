@@ -1,19 +1,15 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.AbstractNamedEntity;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
@@ -21,12 +17,12 @@ public class InMemoryUserRepository implements UserRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        this.save(new User(counter.incrementAndGet(), "Peter", "peter@gmail.com", "peter123", Role.USER));
-        this.save(new User(counter.incrementAndGet(), "Anna", "anna@gmail.com", "anna123", Role.USER));
-        this.save(new User(counter.incrementAndGet(), "Nicholas", "nic@gmail.com", "nic123", Role.USER));
-        this.save(new User(counter.incrementAndGet(), "Clementine", "clem@gmail.com", "clem123", Role.USER));
-        this.save(new User(counter.incrementAndGet(), "Sean", "sean@gmail.com", "sean123", Role.USER));
-        this.save(new User(counter.incrementAndGet(), "Samantha", "samantha@gmail.com", "sam123", Role.USER));
+        userRepo.put(counter.incrementAndGet(), new User(counter.get(), "Peter", "peter@gmail.com", "peter123", Role.USER));
+        userRepo.put(counter.incrementAndGet(), new User(counter.get(), "Anna", "anna@gmail.com", "anna123", Role.USER));
+        userRepo.put(counter.incrementAndGet(), new User(counter.get(), "Nicholas", "nic@gmail.com", "nic123", Role.USER));
+        userRepo.put(counter.incrementAndGet(), new User(counter.get(), "Clementine", "clem@gmail.com", "clem123", Role.USER));
+        userRepo.put(counter.incrementAndGet(), new User(counter.get(), "Sean", "sean@gmail.com", "sean123", Role.USER));
+        userRepo.put(counter.incrementAndGet(), new User(counter.get(), "Samantha", "samantha@gmail.com", "sam123", Role.USER));
     }
 
     @Override
@@ -38,7 +34,6 @@ public class InMemoryUserRepository implements UserRepository {
     public User save(User user) {
         //creates new user
         if (user.isNew()) {
-            user.setId(counter.incrementAndGet());
             userRepo.put(counter.incrementAndGet(), user);
             return user;
         }
@@ -53,7 +48,7 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> getAll() {
-        List<User> users = new ArrayList<>(userRepo.values());
+        List<User> users = new CopyOnWriteArrayList<>(userRepo.values());
         Comparator<User> comparator = Comparator.comparing(AbstractNamedEntity::getName);
         comparator = comparator.thenComparing(User::getEmail);
         users.sort(comparator);
