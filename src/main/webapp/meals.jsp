@@ -25,7 +25,7 @@
     <br><br>
 
     <section>
-    <form method="post" action="meals">
+    <form method="get" action="meals">
         <dl>
             <dt>From date(incl):</dt>
             <dd><input type="date" name="startDate"></dd>

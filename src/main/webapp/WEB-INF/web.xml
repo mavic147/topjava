@@ -6,6 +6,10 @@
 
     <display-name>Topjava</display-name>
 
+    <error-page>
+        <location>/error.html</location>
+    </error-page>
+
     <servlet>
         <servlet-name>userServlet</servlet-name>
         <servlet-class>ru.javawebinar.topjava.web.UserServlet</servlet-class>
