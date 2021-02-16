@@ -28,14 +28,14 @@ public abstract class AbstractMealController {
         return MealsUtil.getTos(service.getAll(), SecurityUtil.authUserCaloriesPerDay());
     }
 
-    public List<MealTo> getAllFilteredByTime(LocalTime startTime, LocalTime endTime) {
+    public List<Meal> getAllFilteredByTime(List<Meal> meals, LocalTime startTime, LocalTime endTime) {
         log.info("getAllFiltered");
-        return MealsUtil.getFilteredByTimeTos(service.getAll(), SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+        return MealsUtil.getFilteredByTimeTos(meals, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
     }
 
-    public List<MealTo> getAllFilteredByDate(LocalDate startDate, LocalDate endDate) {
+    public List<Meal> getAllFilteredByDate(List<Meal> meals, LocalDate startDate, LocalDate endDate) {
         log.info("getAllFiltered");
-        return MealsUtil.getFilteredByDateTos(service.getAll(), SecurityUtil.authUserCaloriesPerDay(), startDate, endDate);
+        return MealsUtil.getFilteredByDateTos(meals, SecurityUtil.authUserCaloriesPerDay(), startDate, endDate);
     }
 
     public Meal get(int id, int userId) {

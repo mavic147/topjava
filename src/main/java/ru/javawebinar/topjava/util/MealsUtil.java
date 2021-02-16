@@ -29,20 +29,31 @@ public class MealsUtil {
     );
 
     public static List<MealTo> getTos(List<Meal> meals, int caloriesPerDay) {
-        return filterByPredicate(meals, caloriesPerDay, meal -> true);
+        return filterByPredicateTo(meals, caloriesPerDay, meal -> true);
     }
 
-    public static List<MealTo> getFilteredByTimeTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
+    public static List<Meal> getFilteredByTimeTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
         return filterByPredicate(meals, caloriesPerDay, meal -> DateTimeUtil.isTimeBetweenHalfOpen(meal.getTime()
                 , startTime, endTime));
     }
 
-    public static List<MealTo> getFilteredByDateTos(Collection<Meal> meals, int caloriesPerDay, LocalDate startDate, LocalDate endDate) {
+    public static List<Meal> getFilteredByDateTos(Collection<Meal> meals, int caloriesPerDay, LocalDate startDate, LocalDate endDate) {
         return filterByPredicate(meals, caloriesPerDay, meal -> DateTimeUtil.isDateBetweenHalfOpen(meal.getDate()
                 , startDate, endDate));
     }
 
-    public static List<MealTo> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
+    public static List<Meal> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
+        Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
+                .collect(
+                        Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
+                );
+
+        return meals.stream()
+                .filter(filter)
+                .collect(Collectors.toList());
+    }
+
+    public static List<MealTo> filterByPredicateTo(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(
                         Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))

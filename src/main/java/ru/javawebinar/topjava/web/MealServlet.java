@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.repository.inmemory.InMemoryMealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.AbstractMealController;
 import ru.javawebinar.topjava.web.meal.MealRestController;
@@ -22,7 +20,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
@@ -83,20 +83,38 @@ public class MealServlet extends HttpServlet {
                 String endTime = request.getParameter("endTime");
                 DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+                List<Meal> filteredMeals = new CopyOnWriteArrayList<>();
                 if (startDate != null || endDate != null) {
-                    try {
-                        request.setAttribute("meals", mealController.getAllFilteredByDate(LocalDate.parse(startDate, dateFormat),
-                                LocalDate.parse(endDate, dateFormat)));
-                    } catch(DateTimeParseException e) {
-                        response.sendRedirect("error.html");
+                    //фильтрация только по дате
+                    if (!startDate.equals("") || !endDate.equals("")) {
+                        try {
+                            filteredMeals = mealController.getAllFilteredByDate(MealsUtil.meals, LocalDate.parse(startDate, dateFormat),
+                                    LocalDate.parse(endDate, dateFormat));
+                        } catch(DateTimeParseException e) {
+                            response.sendRedirect("error.html");
+                        }
                     }
-                } else if(startTime != null || endTime != null) {
-                    try {
-                        request.setAttribute("meals", mealController.getAllFilteredByTime(LocalTime.parse(startTime, timeFormat),
-                                LocalTime.parse(endTime, timeFormat)));
-                    } catch(DateTimeParseException e) {
-                        response.sendRedirect("error.html");
+
+                    //фильтрация только по времени
+                    if(startDate.equals("") || endDate.equals("")) {
+                        if (!startTime.equals("") || !endTime.equals("")) {
+                            try {
+                                filteredMeals = mealController.getAllFilteredByTime(MealsUtil.meals, LocalTime.parse(startTime, timeFormat),
+                                        LocalTime.parse(endTime, timeFormat));
+                            } catch(DateTimeParseException e) {
+                                response.sendRedirect("error.html");
+                            }
+                        }
+                    } else if (!startTime.equals("") || !endTime.equals("")) {//фильтрация по времени и дате
+                        try {
+                            filteredMeals = mealController.getAllFilteredByTime(filteredMeals, LocalTime.parse(startTime, timeFormat),
+                                    LocalTime.parse(endTime, timeFormat));
+                        } catch(DateTimeParseException e) {
+                            response.sendRedirect("error.html");
+                        }
                     }
+
+                    request.setAttribute("meals", MealsUtil.getTos(filteredMeals, SecurityUtil.authUserCaloriesPerDay()));
                 } else {
                     request.setAttribute("meals", mealController.getAll());
                 }
