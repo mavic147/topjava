@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.web.user.AbstractUserController;
+import ru.javawebinar.topjava.web.user.AdminRestController;
 import ru.javawebinar.topjava.web.user.ProfileRestController;
 
 import javax.servlet.ServletException;
@@ -28,6 +29,13 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("forward to users");
+//        int num = Integer.parseInt(request.getParameter("num"));
+//        SecurityUtil.setAuthUserId(num);
+//        if (SecurityUtil.authUserId == 1) {
+//            userController = appCtx.getBean(ProfileRestController.class);
+//        } else {
+//            userController = appCtx.getBean(AdminRestController.class);
+//        }
         request.setAttribute("users", userController.getAll());
         request.getRequestDispatcher("/users.jsp").forward(request, response);
     }
