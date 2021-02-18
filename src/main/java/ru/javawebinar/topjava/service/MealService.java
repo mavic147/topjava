@@ -1,12 +1,17 @@
 package ru.javawebinar.topjava.service;
 
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.FilterUtil;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
+import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfDayOrMax;
+import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfDayOrMin;
 
 @Service
 public class MealService {
@@ -35,5 +40,9 @@ public class MealService {
 
     public List<Meal> getAll() {
         return repository.getAll();
+    }
+
+    public List<Meal> getAllFiltered(@Nullable LocalDate startDate, @Nullable LocalDate endDate) {
+        return repository.getAllFiltered(atStartOfDayOrMin(startDate), atStartOfDayOrMax(endDate));
     }
 }
