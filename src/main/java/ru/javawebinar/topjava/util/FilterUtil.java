@@ -1,9 +1,11 @@
 package ru.javawebinar.topjava.util;
 
+import org.springframework.lang.Nullable;
+
 import java.time.LocalDateTime;
 
 public class FilterUtil {
-    public static  <T extends Comparable<T>> boolean isBetweenHalfOpen(LocalDateTime lt, LocalDateTime start, LocalDateTime end) {
-        return (start == null || lt.compareTo(start) >= 0) && (end == null || lt.compareTo(end) < 0);
+    public static  <T extends Comparable<T>> boolean isBetweenHalfOpen(T localTime, @Nullable T start, @Nullable T end) {
+        return (start == null || localTime.compareTo(start) >= 0) && (end == null || localTime.compareTo(end) < 0);
     }
 }

@@ -30,8 +30,8 @@ public class MealsUtil {
         return filterByPredicateTo(meals, caloriesPerDay, meal -> true);
     }
 
-//    public static List<Meal> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalDateTime startTime, LocalDateTime endTime) {
-//        return filterByPredicate(meals, caloriesPerDay, meal -> FilterUtil.isBetweenHalfOpen(meal.getTime()
+//    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
+//        return filterByPredicate(meals, caloriesPerDay, meal -> FilterUtil.isBetweenHalfOpen(meal.get
 //                , startTime, endTime));
 //    }
 
@@ -45,16 +45,16 @@ public class MealsUtil {
 //                , startDate, endDate));
 //    }
 
-    public static List<Meal> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
-        Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
-                .collect(
-                        Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
-                );
-
-        return meals.stream()
-                .filter(filter)
-                .collect(Collectors.toList());
-    }
+//    public static List<Meal> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
+//        Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
+//                .collect(
+//                        Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
+//                );
+//
+//        return meals.stream()
+//                .filter(filter)
+//                .collect(Collectors.toList());
+//    }
 
     public static List<MealTo> filterByPredicateTo(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
