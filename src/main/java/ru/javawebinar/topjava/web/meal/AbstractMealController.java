@@ -29,11 +29,11 @@ public abstract class AbstractMealController {
         return MealsUtil.getTos(service.getAll(), SecurityUtil.authUserCaloriesPerDay());
     }
 
-//    public List<MealTo> getAllFiltered(@Nullable LocalDate startDate, @Nullable LocalDate endDate,
-//                                       @Nullable LocalTime startTime, @Nullable LocalTime endTime) {
-//        List<Meal> filteredByDate = service.getAllFiltered(startDate, endDate);
-//        return MealsUtil.getFilteredTos(filteredByDate, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
-//    }
+    public List<MealTo> getAllFiltered(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
+                                       @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
+        List<Meal> filteredByDate = service.getAllFiltered(startDate, endDate);
+        return MealsUtil.getFilteredTos(filteredByDate, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+    }
 
 //    public List<Meal> getAllFilteredByTime(List<Meal> meals, LocalTime startTime, LocalTime endTime) {
 //        log.info("getAllFiltered");

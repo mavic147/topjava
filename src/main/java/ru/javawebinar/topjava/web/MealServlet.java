@@ -78,46 +78,47 @@ public class MealServlet extends HttpServlet {
             default:
                 log.info("getAll");
                 String startDate = request.getParameter("startDate");
-                String endDate = request.getParameter("endDate");
                 String startTime = request.getParameter("startTime");
+                String endDate = request.getParameter("endDate");
                 String endTime = request.getParameter("endTime");
                 DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+//                request.setAttribute();
                 List<Meal> filteredMeals = new CopyOnWriteArrayList<>();
-                if (startDate != null || endDate != null) {
-                    //фильтрация только по дате
-                    if (!startDate.equals("") || !endDate.equals("")) {
-                        try {
-                            filteredMeals = mealController.getAllFilteredByDate(MealsUtil.meals, LocalDate.parse(startDate, dateFormat),
-                                    LocalDate.parse(endDate, dateFormat));
-                        } catch(DateTimeParseException e) {
-                            response.sendRedirect("error.html");
-                        }
-                    }
-
-                    //фильтрация только по времени
-                    if(startDate.equals("") || endDate.equals("")) {
-                        if (!startTime.equals("") || !endTime.equals("")) {
-                            try {
-                                filteredMeals = mealController.getAllFilteredByTime(MealsUtil.meals, LocalTime.parse(startTime, timeFormat),
-                                        LocalTime.parse(endTime, timeFormat));
-                            } catch(DateTimeParseException e) {
-                                response.sendRedirect("error.html");
-                            }
-                        }
-                    } else if (!startTime.equals("") || !endTime.equals("")) {//фильтрация по времени и дате
-                        try {
-                            filteredMeals = mealController.getAllFilteredByTime(filteredMeals, LocalTime.parse(startTime, timeFormat),
-                                    LocalTime.parse(endTime, timeFormat));
-                        } catch(DateTimeParseException e) {
-                            response.sendRedirect("error.html");
-                        }
-                    }
-
-                    request.setAttribute("meals", MealsUtil.getTos(filteredMeals, SecurityUtil.authUserCaloriesPerDay()));
-                } else {
-                    request.setAttribute("meals", mealController.getAll());
-                }
+//                if (startDate != null || endDate != null) {
+//                    //фильтрация только по дате
+//                    if (!startDate.equals("") || !endDate.equals("")) {
+//                        try {
+//                            filteredMeals = mealController.getAllFilteredByDate(MealsUtil.meals, LocalDate.parse(startDate, dateFormat),
+//                                    LocalDate.parse(endDate, dateFormat));
+//                        } catch(DateTimeParseException e) {
+//                            response.sendRedirect("error.html");
+//                        }
+//                    }
+//
+//                    //фильтрация только по времени
+//                    if(startDate.equals("") || endDate.equals("")) {
+//                        if (!startTime.equals("") || !endTime.equals("")) {
+//                            try {
+//                                filteredMeals = mealController.getAllFilteredByTime(MealsUtil.meals, LocalTime.parse(startTime, timeFormat),
+//                                        LocalTime.parse(endTime, timeFormat));
+//                            } catch(DateTimeParseException e) {
+//                                response.sendRedirect("error.html");
+//                            }
+//                        }
+//                    } else if (!startTime.equals("") || !endTime.equals("")) {//фильтрация по времени и дате
+//                        try {
+//                            filteredMeals = mealController.getAllFilteredByTime(filteredMeals, LocalTime.parse(startTime, timeFormat),
+//                                    LocalTime.parse(endTime, timeFormat));
+//                        } catch(DateTimeParseException e) {
+//                            response.sendRedirect("error.html");
+//                        }
+//                    }
+//
+//                    request.setAttribute("meals", MealsUtil.getTos(filteredMeals, SecurityUtil.authUserCaloriesPerDay()));
+//                } else {
+//                    request.setAttribute("meals", mealController.getAll());
+//                }
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }
