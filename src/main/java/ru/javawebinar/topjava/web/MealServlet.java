@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.AbstractMealController;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
@@ -18,11 +17,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
@@ -74,17 +75,16 @@ public class MealServlet extends HttpServlet {
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
-            case "all":
-            default:
-                log.info("getAll");
-                String startDate = request.getParameter("startDate");
-                String startTime = request.getParameter("startTime");
-                String endDate = request.getParameter("endDate");
-                String endTime = request.getParameter("endTime");
-                DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
-//                request.setAttribute();
-                List<Meal> filteredMeals = new CopyOnWriteArrayList<>();
+            case "filter":
+                log.info("getAllFiltered");
+                LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
+                LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
+                LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
+                LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
+                request.setAttribute("meals", mealController.getAllFiltered(startDate, startTime, endDate, endTime));
+                request.getRequestDispatcher("/meals.jsp").forward(request, response);
+                break;
+//            List<Meal> filteredMeals = new CopyOnWriteArrayList<>();
 //                if (startDate != null || endDate != null) {
 //                    //фильтрация только по дате
 //                    if (!startDate.equals("") || !endDate.equals("")) {
@@ -119,6 +119,10 @@ public class MealServlet extends HttpServlet {
 //                } else {
 //                    request.setAttribute("meals", mealController.getAll());
 //                }
+            case "all":
+            default:
+                log.info("getAll");
+                request.setAttribute("meals", mealController.getAll());
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }

@@ -21,6 +21,14 @@ public class DateTimeUtil {
         return endDate == null ? MAX_DATE : endDate.plus(1, ChronoUnit.DAYS).atStartOfDay();
     }
 
+    public static LocalDate parseLocalDate(String dateStr) {
+        return (dateStr == null || dateStr.equals("")) ? null : LocalDate.parse(dateStr);
+    }
+
+    public static LocalTime parseLocalTime(String timeStr) {
+        return (timeStr == null || timeStr.equals("")) ? null : LocalTime.parse(timeStr);
+    }
+
 //    public static boolean isTimeBetweenHalfOpen(LocalTime lt, LocalTime startTime, LocalTime endTime) {
 //        return lt.compareTo(startTime) >= 0 && lt.compareTo(endTime) < 0;
 //    }
