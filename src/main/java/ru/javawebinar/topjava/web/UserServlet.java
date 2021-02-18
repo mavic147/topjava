@@ -27,6 +27,13 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int userID = Integer.parseInt(req.getParameter("num"));
+        SecurityUtil.setAuthUserId(userID);
+        resp.sendRedirect("meals");
+    }
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("forward to users");
 //        int num = Integer.parseInt(request.getParameter("num"));
@@ -36,7 +43,7 @@ public class UserServlet extends HttpServlet {
 //        } else {
 //            userController = appCtx.getBean(AdminRestController.class);
 //        }
-        request.setAttribute("users", userController.getAll());
+//        request.setAttribute("users", userController.getAll());
         request.getRequestDispatcher("/users.jsp").forward(request, response);
     }
 }
