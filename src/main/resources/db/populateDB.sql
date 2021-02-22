@@ -13,8 +13,8 @@ VALUES ('USER', 100000),
        ('ADMIN', 100001);
 
 INSERT INTO meals (id, user_id, date_time, description, calories)
-VALUES (1, 100000, '2021-02-21 10:15:17', 'Breakfast', 570),
-       (2, 100000, '2021-02-21 17:26:19', 'Kebob', 1256),
-       (3, 100001, '2021-02-20 19:38:21', 'Youghurt', 400);
+VALUES (nextval('meal_global_seq'), 100000, '2021-02-21 10:15:17', 'Breakfast', 570),
+       (nextval('meal_global_seq'), 100000, '2021-02-21 17:26:19', 'Kebob', 1256),
+       (nextval('meal_global_seq'), 100001, '2021-02-20 19:38:21', 'Youghurt', 400);
 
 
