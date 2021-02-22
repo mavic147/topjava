@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 public class MealTestData {
+
     public static final Meal userMeal1 = new Meal(1, LocalDateTime.of(2021, Month.FEBRUARY, 21, 10, 15, 17),
             "Breakfast", 570);
 
@@ -14,6 +15,7 @@ public class MealTestData {
 
     public static final Meal adminMeal = new Meal(3, LocalDateTime.of(2021, Month.FEBRUARY, 20, 19, 38, 21),
             "Youghurt", 400);
+
 
     //эталонный meal
     public static Meal getNewMeal() {
