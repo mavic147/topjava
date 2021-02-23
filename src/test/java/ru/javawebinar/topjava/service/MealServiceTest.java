@@ -24,6 +24,7 @@ import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 public class MealServiceTest {
 
     public static final int ADMIN_ID = START_SEQ + 1;
+    public static final int USER_ID = START_SEQ;
     public static final int NOT_FOUND_ID = START_SEQ + 5;
 
     static {
@@ -63,4 +64,9 @@ public class MealServiceTest {
                 () -> mealService.create(getNewMealWithExistingDateTime(), ADMIN_ID));
     }
 
+    @Test
+    public void delete() {
+        mealService.delete(1, USER_ID);
+        assertThrows(NotFoundException.class, () -> mealService.get(1, USER_ID));
+    }
 }
