@@ -11,9 +11,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import static org.junit.Assert.*;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -83,5 +88,14 @@ public class MealServiceTest {
     @Test
     public void getWrongMeal() {
         assertThrows(NotFoundException.class, () -> mealService.get(2, ADMIN_ID));
+    }
+
+    @Test
+    public void getAll() {
+        List<Meal> actualMeals = new ArrayList<>();
+        actualMeals.add(userMeal1);
+        actualMeals.add(userMeal2);
+        actualMeals.sort(Comparator.comparing(Meal::getDateTime).reversed());
+        assertThat(actualMeals).usingRecursiveFieldByFieldElementComparator().isEqualTo(mealService.getAll(100000));
     }
 }
