@@ -4,19 +4,34 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MealTestData {
 
-    public static final Meal userMeal1 = new Meal(1, LocalDateTime.of(2021, Month.FEBRUARY, 21, 10, 15, 17),
-            "Breakfast", 570);
+    public static final Meal userMeal1;
 
-    public static final Meal userMeal2 = new Meal(2, LocalDateTime.of(2021, Month.FEBRUARY, 21, 17, 26, 19),
-            "Kebob", 1256);
+    public static final Meal userMeal2;
 
-    public static final Meal adminMeal = new Meal(3, LocalDateTime.of(2021, Month.FEBRUARY, 20, 19, 38, 21),
-            "Youghurt", 400);
+    public static final Meal adminMeal;
+
+    public static final List<Meal> actualMeals = new ArrayList<>();
+
+    static {
+        userMeal1 = new Meal(1, LocalDateTime.of(2021, Month.FEBRUARY, 21, 10, 15, 17),
+                "Breakfast", 570);
+        userMeal2 = new Meal(2, LocalDateTime.of(2021, Month.FEBRUARY, 21, 17, 26, 19),
+                "Kebob", 1256);
+        adminMeal = new Meal(3, LocalDateTime.of(2021, Month.FEBRUARY, 20, 19, 38, 21),
+                "Youghurt", 400);
+
+        actualMeals.add(userMeal1);
+        actualMeals.add(userMeal2);
+        actualMeals.sort(Comparator.comparing(Meal::getDateTime).reversed());
+    }
 
 
     //эталонный meal
@@ -43,11 +58,7 @@ public class MealTestData {
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
-    public static void assertListsMatch() {
-
-    }
-
-    public static void assertListsNotMatch() {
-
+    public static void assertListsMatch(List<Meal> actualMeals, List<Meal> expectedMeals) {
+        assertThat(actualMeals).usingRecursiveFieldByFieldElementComparator().isEqualTo(expectedMeals);
     }
 }

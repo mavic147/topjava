@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -51,11 +52,9 @@ public class MealServiceTest {
 
     @Test
     public void update() {
-        Meal updatedMeal = mealService.create(getUpdatedMeal(), ADMIN_ID);
-        Integer updatedId = updatedMeal.getId();
-        Meal actualMeal = getUpdatedMeal();
-        assertObjectsMatch(actualMeal, updatedMeal);
-        assertObjectsMatch(actualMeal, mealService.get(updatedId, ADMIN_ID));
+        Meal updatedMeal = getUpdatedMeal();
+        mealService.update(updatedMeal, updatedMeal.getId());
+        assertObjectsMatch(mealService.get(updatedMeal.getId(), ADMIN_ID),getUpdatedMeal());
     }
 
     @Test
@@ -92,19 +91,18 @@ public class MealServiceTest {
 
     @Test
     public void getAll() {
-        List<Meal> actualMeals = new ArrayList<>();
-        actualMeals.add(userMeal1);
-        actualMeals.add(userMeal2);
-        actualMeals.sort(Comparator.comparing(Meal::getDateTime).reversed());
-        assertThat(actualMeals).usingRecursiveFieldByFieldElementComparator().isEqualTo(mealService.getAll(100000));
+        assertListsMatch(actualMeals, mealService.getAll(USER_ID));
     }
 
     @Test
     public void getAllWrongMeals() {
-        List<Meal> actualMeals = new ArrayList<>();
-        actualMeals.add(userMeal1);
-        actualMeals.add(userMeal2);
-        actualMeals.sort(Comparator.comparing(Meal::getDateTime).reversed());
-        assertThat(actualMeals).usingRecursiveFieldByFieldElementComparator().isNotEqualTo(mealService.getAll(100001));
+        assertThat(actualMeals).usingRecursiveFieldByFieldElementComparator().isNotEqualTo(mealService.getAll(ADMIN_ID));
+    }
+
+    @Test
+    public void getBetweenHalfOpen() {
+        LocalDate start = LocalDate.of(2021, 2, 21);
+        LocalDate end = LocalDate.of(2021, 2, 21);
+        assertListsMatch(actualMeals, mealService.getBetweenInclusive(start, end, USER_ID));
     }
 }
