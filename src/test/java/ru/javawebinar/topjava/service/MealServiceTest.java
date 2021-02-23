@@ -45,8 +45,8 @@ public class MealServiceTest {
         Integer newId = createdMeal.getId();
         Meal newMeal = getNewMeal();
         newMeal.setId(newId);
-        assertEquals(createdMeal, newMeal);
-        assertEquals(mealService.get(newId, ADMIN_ID), newMeal);
+        assertThat(newMeal).usingRecursiveComparison().isEqualTo(createdMeal);
+        assertThat(newMeal).usingRecursiveComparison().isEqualTo(mealService.get(newId, ADMIN_ID));
     }
 
     @Test
@@ -54,8 +54,8 @@ public class MealServiceTest {
         Meal updatedMeal = mealService.create(getUpdatedMeal(), ADMIN_ID);
         Integer updatedId = updatedMeal.getId();
         Meal actualMeal = getUpdatedMeal();
-        assertEquals(updatedMeal, actualMeal);
-        assertEquals(mealService.get(updatedId, ADMIN_ID), actualMeal);
+        assertThat(actualMeal).usingRecursiveComparison().isEqualTo(updatedMeal);
+        assertThat(actualMeal).usingRecursiveComparison().isEqualTo(mealService.get(updatedId, ADMIN_ID));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class MealServiceTest {
 
     @Test
     public void get() {
-        assertEquals(mealService.get(2, USER_ID), userMeal2);
+        assertThat(userMeal2).usingRecursiveComparison().isEqualTo(mealService.get(2, USER_ID));
     }
 
     @Test
