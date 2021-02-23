@@ -57,4 +57,10 @@ public class MealServiceTest {
         assertThrows(NotFoundException.class, () -> mealService.update(getUpdatedMeal(), NOT_FOUND_ID));
     }
 
+    @Test
+    public void duplicateDateTimeCreate() {
+        assertThrows(org.springframework.dao.DuplicateKeyException.class,
+                () -> mealService.create(getNewMealWithExistingDateTime(), ADMIN_ID));
+    }
+
 }

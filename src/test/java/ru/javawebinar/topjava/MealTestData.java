@@ -19,7 +19,8 @@ public class MealTestData {
 
     //эталонный meal
     public static Meal getNewMeal() {
-        return new Meal(null, LocalDateTime.of(2021, Month.FEBRUARY, 22, 16, 34, 19), "Snack", 699);
+        return new Meal(null, LocalDateTime.of(2021, Month.FEBRUARY, 22, 16, 34, 19),
+                "Snack", 699);
     }
 
     //эталонный обновленный meal
@@ -29,5 +30,10 @@ public class MealTestData {
         updated.setDescription("Sandwich");
         updated.setCalories(749);
         return updated;
+    }
+
+    public static Meal getNewMealWithExistingDateTime() {
+        return new Meal(null, LocalDateTime.of(2021, Month.FEBRUARY, 21, 10, 15, 17),
+                "Porridge", 300);
     }
 }
