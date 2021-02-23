@@ -23,8 +23,8 @@ import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
-    public static final int ADMIN_ID = START_SEQ + 1;
     public static final int USER_ID = START_SEQ;
+    public static final int ADMIN_ID = START_SEQ + 1;
     public static final int NOT_FOUND_ID = START_SEQ + 5;
 
     static {
@@ -73,5 +73,15 @@ public class MealServiceTest {
     @Test
     public void deleteWrongMeal() {
         assertThrows(NotFoundException.class, () -> mealService.delete(2, ADMIN_ID));
+    }
+
+    @Test
+    public void get() {
+        assertEquals(mealService.get(2, USER_ID), userMeal2);
+    }
+
+    @Test
+    public void getWrongMeal() {
+        assertThrows(NotFoundException.class, () -> mealService.get(2, ADMIN_ID));
     }
 }
