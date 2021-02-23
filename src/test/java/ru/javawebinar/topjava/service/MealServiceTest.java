@@ -9,6 +9,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import static org.junit.Assert.*;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -23,6 +24,7 @@ import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 public class MealServiceTest {
 
     public static final int ADMIN_ID = START_SEQ + 1;
+    public static final int NOT_FOUND_ID = START_SEQ + 5;
 
     static {
         SLF4JBridgeHandler.install();
@@ -50,6 +52,9 @@ public class MealServiceTest {
         assertEquals(mealService.get(updatedId, ADMIN_ID), actualMeal);
     }
 
-
+    @Test
+    public void updateWrongMeal() {
+        assertThrows(NotFoundException.class, () -> mealService.update(getUpdatedMeal(), NOT_FOUND_ID));
+    }
 
 }
