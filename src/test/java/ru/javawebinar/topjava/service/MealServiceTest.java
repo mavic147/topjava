@@ -45,8 +45,8 @@ public class MealServiceTest {
         Integer newId = createdMeal.getId();
         Meal newMeal = getNewMeal();
         newMeal.setId(newId);
-        assertThat(newMeal).usingRecursiveComparison().isEqualTo(createdMeal);
-        assertThat(newMeal).usingRecursiveComparison().isEqualTo(mealService.get(newId, ADMIN_ID));
+        assertObjectsMatch(newMeal, createdMeal);
+        assertObjectsMatch(newMeal, mealService.get(newId, ADMIN_ID));
     }
 
     @Test
@@ -54,8 +54,8 @@ public class MealServiceTest {
         Meal updatedMeal = mealService.create(getUpdatedMeal(), ADMIN_ID);
         Integer updatedId = updatedMeal.getId();
         Meal actualMeal = getUpdatedMeal();
-        assertThat(actualMeal).usingRecursiveComparison().isEqualTo(updatedMeal);
-        assertThat(actualMeal).usingRecursiveComparison().isEqualTo(mealService.get(updatedId, ADMIN_ID));
+        assertObjectsMatch(actualMeal, updatedMeal);
+        assertObjectsMatch(actualMeal, mealService.get(updatedId, ADMIN_ID));
     }
 
     @Test
@@ -97,5 +97,14 @@ public class MealServiceTest {
         actualMeals.add(userMeal2);
         actualMeals.sort(Comparator.comparing(Meal::getDateTime).reversed());
         assertThat(actualMeals).usingRecursiveFieldByFieldElementComparator().isEqualTo(mealService.getAll(100000));
+    }
+
+    @Test
+    public void getAllWrongMeals() {
+        List<Meal> actualMeals = new ArrayList<>();
+        actualMeals.add(userMeal1);
+        actualMeals.add(userMeal2);
+        actualMeals.sort(Comparator.comparing(Meal::getDateTime).reversed());
+        assertThat(actualMeals).usingRecursiveFieldByFieldElementComparator().isNotEqualTo(mealService.getAll(100001));
     }
 }

@@ -5,6 +5,8 @@ import ru.javawebinar.topjava.model.Meal;
 import java.time.LocalDateTime;
 import java.time.Month;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class MealTestData {
 
     public static final Meal userMeal1 = new Meal(1, LocalDateTime.of(2021, Month.FEBRUARY, 21, 10, 15, 17),
@@ -35,5 +37,17 @@ public class MealTestData {
     public static Meal getNewMealWithExistingDateTime() {
         return new Meal(null, LocalDateTime.of(2021, Month.FEBRUARY, 21, 10, 15, 17),
                 "Porridge", 300);
+    }
+
+    public static void assertObjectsMatch(Meal actual, Meal expected) {
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    }
+
+    public static void assertListsMatch() {
+
+    }
+
+    public static void assertListsNotMatch() {
+
     }
 }
