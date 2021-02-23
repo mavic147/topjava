@@ -69,4 +69,9 @@ public class MealServiceTest {
         mealService.delete(1, USER_ID);
         assertThrows(NotFoundException.class, () -> mealService.get(1, USER_ID));
     }
+
+    @Test
+    public void deleteWrongMeal() {
+        assertThrows(NotFoundException.class, () -> mealService.delete(2, ADMIN_ID));
+    }
 }
