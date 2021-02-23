@@ -41,6 +41,15 @@ public class MealServiceTest {
         assertEquals(mealService.get(newId, ADMIN_ID), newMeal);
     }
 
+    @Test
+    public void update() {
+        Meal updatedMeal = mealService.create(getUpdatedMeal(), ADMIN_ID);
+        Integer updatedId = updatedMeal.getId();
+        Meal actualMeal = getUpdatedMeal();
+        assertEquals(updatedMeal, actualMeal);
+        assertEquals(mealService.get(updatedId, ADMIN_ID), actualMeal);
+    }
+
 
 
 }
