@@ -12,9 +12,6 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static ru.javawebinar.topjava.MealTestData.*;
