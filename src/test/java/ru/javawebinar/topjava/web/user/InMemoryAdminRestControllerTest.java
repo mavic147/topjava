@@ -17,14 +17,12 @@ public class InMemoryAdminRestControllerTest {
     private static final Logger log = LoggerFactory.getLogger(InMemoryAdminRestControllerTest.class);
 
     private static ConfigurableApplicationContext appCtx;
-    private static AdminRestController controller;
     private static InMemoryUserRepository repository;
 
     @BeforeClass
     public static void beforeClass() {
-        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        appCtx = new ClassPathXmlApplicationContext( "spring/spring-app-test.xml");
         log.info("\n{}\n", Arrays.toString(appCtx.getBeanDefinitionNames()));
-        controller = appCtx.getBean(AdminRestController.class);
         repository = appCtx.getBean(InMemoryUserRepository.class);
     }
 
@@ -41,12 +39,12 @@ public class InMemoryAdminRestControllerTest {
 
     @Test
     public void delete() {
-        controller.delete(USER_ID);
+        repository.delete(USER_ID);
         Assert.assertNull(repository.get(USER_ID));
     }
 
     @Test
     public void deleteNotFound() {
-        Assert.assertThrows(NotFoundException.class, () -> controller.delete(NOT_FOUND));
+        Assert.assertThrows(NotFoundException.class, () -> repository.delete(NOT_FOUND));
     }
 }
