@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository;
+import ru.javawebinar.topjava.service.inmemory.UserService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.Arrays;
@@ -18,12 +19,14 @@ public class InMemoryAdminRestControllerTest {
 
     private static ConfigurableApplicationContext appCtx;
     private static InMemoryUserRepository repository;
+    private static UserService service;
 
     @BeforeClass
     public static void beforeClass() {
         appCtx = new ClassPathXmlApplicationContext( "spring/spring-app-test.xml");
         log.info("\n{}\n", Arrays.toString(appCtx.getBeanDefinitionNames()));
         repository = appCtx.getBean(InMemoryUserRepository.class);
+        service = appCtx.getBean(UserService.class);
     }
 
     @AfterClass
@@ -39,12 +42,12 @@ public class InMemoryAdminRestControllerTest {
 
     @Test
     public void delete() {
-        repository.delete(USER_ID);
+        service.delete(USER_ID);
         Assert.assertNull(repository.get(USER_ID));
     }
 
     @Test
     public void deleteNotFound() {
-        Assert.assertThrows(NotFoundException.class, () -> repository.delete(NOT_FOUND));
+        Assert.assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND));
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository;
+import ru.javawebinar.topjava.service.inmemory.UserService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import static ru.javawebinar.topjava.UserTestData.NOT_FOUND;
@@ -20,6 +21,9 @@ public class InMemoryAdminRestControllerSpringTest {
     @Autowired
     private InMemoryUserRepository repository;
 
+    @Autowired
+    private UserService service;
+
     @Before
     public void setUp() {
         repository.init();
@@ -27,12 +31,12 @@ public class InMemoryAdminRestControllerSpringTest {
 
     @Test
     public void delete() {
-        repository.delete(USER_ID);
+        service.delete(USER_ID);
         Assert.assertNull(repository.get(USER_ID));
     }
 
     @Test
     public void deleteNotFound() {
-        Assert.assertThrows(NotFoundException.class, () -> repository.delete(NOT_FOUND));
+        Assert.assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND));
     }
 }
