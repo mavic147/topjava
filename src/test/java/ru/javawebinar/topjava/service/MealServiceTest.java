@@ -53,7 +53,7 @@ public class MealServiceTest {
     @Test
     public void update() {
         Meal updatedMeal = getUpdatedMeal();
-        mealService.update(updatedMeal, updatedMeal.getId());
+        mealService.update(updatedMeal, ADMIN_ID);
         assertObjectsMatch(mealService.get(updatedMeal.getId(), ADMIN_ID),getUpdatedMeal());
     }
 
