@@ -1,4 +1,4 @@
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/7cbbfc11cdca4502899c50db977bbfe3)](https://www.codacy.com/gh/JavaWebinar/topjava/dashboard)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b182063b82624a728915adf10be12fe1)](https://www.codacy.com/gh/mavic147/topjava/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mavic147/topjava&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://api.travis-ci.com/JavaWebinar/topjava.svg?branch=master)](https://travis-ci.com/JavaWebinar/topjava)
 Java Enterprise Online Project 
 ===============================
