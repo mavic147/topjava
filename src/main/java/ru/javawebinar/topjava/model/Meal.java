@@ -10,9 +10,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+//@NamedQueries({@NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user_id=:userId")})
 @Entity
 @Table(name="meals", uniqueConstraints = {@UniqueConstraint(columnNames={"user_id", "date_time"}, name="meals_unique_user_datetime_idx")})
 public class Meal extends AbstractBaseEntity {
+
+    public static final String DELETE = "Meal.delete";
+    public static final String GET = "Meal.get";
+    public static final String GET_ALL = "Meal.getAll";
+    public static final String GET_BETWEEN_PERIOD = "Meal.getBetweenHalfOpen";
+
 
     @Column(name="date_time", nullable = false, unique = true)
     @NotNull
