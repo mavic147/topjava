@@ -14,9 +14,7 @@ import java.time.LocalTime;
         @NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
         @NamedQuery(name = Meal.GET_ALL, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
         @NamedQuery(name = Meal.GET_BETWEEN_PERIOD, query = "SELECT m FROM Meal m WHERE m.user.id=:userId AND " +
-                "m.dateTime >=: startDateTime AND m.dateTime <: endDateTime ORDER BY m.dateTime DESC"),
-        @NamedQuery (name = Meal.UPDATE, query = "UPDATE Meal SET dateTime=:dateTime, description=:description, " +
-                "calories =: calories WHERE id=:id AND user.id=:userId")
+                "m.dateTime >=: startDateTime AND m.dateTime <: endDateTime ORDER BY m.dateTime DESC")
 })
 @Entity
 @Table(name="meals", uniqueConstraints = {@UniqueConstraint(columnNames={"user_id", "date_time"}, name="meals_unique_user_datetime_idx")})
@@ -26,7 +24,6 @@ public class Meal extends AbstractBaseEntity {
     public static final String GET = "Meal.get";
     public static final String GET_ALL = "Meal.getAll";
     public static final String GET_BETWEEN_PERIOD = "Meal.getBetweenHalfOpen";
-    public static final String UPDATE = "Meal.update";
 
     @Column(name="date_time", nullable = false, unique = true)
     @NotNull
@@ -42,7 +39,6 @@ public class Meal extends AbstractBaseEntity {
     private int calories;
 
     @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name="user_id")
     private User user;
 
     public Meal() {
