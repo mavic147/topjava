@@ -8,14 +8,18 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
+import static ru.javawebinar.topjava.service.MealServiceTest.results;
+
 public class MyStopWatch extends Stopwatch {
 
-    private static final Logger logger = LoggerFactory.getLogger(MyStopWatch.class);
+    private static final Logger logger = LoggerFactory.getLogger("result");
 
     private static void logInfo(Description description, String status, long nanos) {
-        String testName = description.getMethodName();
-        logger.info(String.format("Test %s %s, spent %d microseconds",
-                testName, status, TimeUnit.NANOSECONDS.toMicros(nanos)));
+        String result = String.format("Test %s %s, spent %d microseconds",
+                description.getMethodName(), status,
+                TimeUnit.NANOSECONDS.toMicros(nanos));
+        logger.info(result);
+        results.add(result);
     }
 
     @Override
