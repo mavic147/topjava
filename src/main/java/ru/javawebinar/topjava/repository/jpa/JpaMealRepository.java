@@ -29,9 +29,8 @@ public class JpaMealRepository implements MealRepository {
             return meal;
         } else if(get(meal.getId(), userId) != null) {
             return em.merge(meal);
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override
