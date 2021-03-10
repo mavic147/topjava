@@ -35,9 +35,16 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ActiveProfiles(resolver = Profiles.ActiveDbProfileResolver.class)
 public class MealServiceTest {
+
     private static final Logger log = getLogger("result");
 
     private static final StringBuilder results = new StringBuilder();
+
+    @Autowired
+    protected CacheManager cacheManager;
+
+    @Autowired
+    private MealService service;
 
     @Rule
     // http://stackoverflow.com/questions/14892125/what-is-the-best-practice-to-determine-the-execution-time-of-the-bussiness-relev
@@ -49,12 +56,6 @@ public class MealServiceTest {
             log.info(result + " ms\n");
         }
     };
-
-    @Autowired
-    private MealService service;
-
-    @Autowired
-    private CacheManager cacheManager;
 
     @AfterClass
     public static void printResult() {

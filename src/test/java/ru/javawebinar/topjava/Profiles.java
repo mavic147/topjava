@@ -31,10 +31,7 @@ public class Profiles {
     public static class ActiveDbProfileResolver implements ActiveProfilesResolver {
         @Override
         public @NonNull String[] resolve(@NonNull Class<?> aClass) {
-            String[] activeProfiles = new String[2];
-            activeProfiles[0] = getActiveDbProfile();
-            activeProfiles[1] = REPOSITORY_IMPLEMENTATION;
-            return activeProfiles;
+            return new String[]{getActiveDbProfile(), REPOSITORY_IMPLEMENTATION};
         }
     }
 }
