@@ -16,7 +16,7 @@ public class Profiles {
             POSTGRES_DB = "postgres",
             HSQL_DB = "hsqldb";
 
-    //  Get DB profile depending of DB driver in classpath
+    //  Get DB profile depending on DB driver in classpath
     public static String getActiveDbProfile() {
         if (ClassUtils.isPresent("org.postgresql.Driver", null)) {
             return POSTGRES_DB;
@@ -31,7 +31,10 @@ public class Profiles {
     public static class ActiveDbProfileResolver implements ActiveProfilesResolver {
         @Override
         public @NonNull String[] resolve(@NonNull Class<?> aClass) {
-            return new String[]{getActiveDbProfile()};
+            String[] activeProfiles = new String[2];
+            activeProfiles[0] = getActiveDbProfile();
+            activeProfiles[1] = REPOSITORY_IMPLEMENTATION;
+            return activeProfiles;
         }
     }
 }
