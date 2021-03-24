@@ -13,7 +13,6 @@
     <hr/>
     <h2>Meals</h2>
     <form method="get" action="meals">
-        <input type="hidden" name="action" value="filter">
         <dl>
             <dt>From Date (inclusive):</dt>
             <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
