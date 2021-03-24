@@ -1,19 +1,20 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
+import org.springframework.core.env.Environment;
 import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import ru.javawebinar.topjava.repository.JpaUtil;
 
 import static org.junit.Assert.assertThrows;
@@ -28,7 +29,19 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     private CacheManager cacheManager;
 
     @Autowired
+    private Environment env;
+
+    @Autowired(required = false)
     protected JpaUtil jpaUtil;
+
+    public boolean notContainsJdbc() {
+        return !(Arrays.asList(env.getActiveProfiles()).contains("jdbc"));
+    }
+
+    @Before
+    public void checkProfiles() {
+        Assume.assumeTrue(notContainsJdbc());
+    }
 
     @Before
     public void setup() {
