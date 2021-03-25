@@ -68,7 +68,7 @@ public class JspMealController {
         return "meals";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("?{id}")
     public String deleteMeal(@PathVariable("id") int id) {
         int userId = SecurityUtil.authUserId();
         mealService.delete(id, userId);

@@ -1,10 +1,9 @@
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="org.springframework.format.annotation.DateTimeFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
@@ -23,7 +22,7 @@
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt>DateTime:</dt>
-            <dd><input type="datetime-local" value="${fn:toDateTime(meal.dateTime)}" name="dateTime" required></dd>
+            <dd><input type="datetime-local" value="${fn:toDateTime(meal.dateTime)}"  name="dateTime" required></dd>
         </dl>
         <dl>
             <dt>Description:</dt>

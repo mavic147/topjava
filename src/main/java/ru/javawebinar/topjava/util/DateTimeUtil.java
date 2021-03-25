@@ -43,6 +43,7 @@ public class DateTimeUtil {
     }
 
     public static LocalDateTime toLocalDateTime(@NotNull String str) {
-        return LocalDateTime.parse(str, DATE_TIME_FORMATTER);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        return LocalDateTime.parse(str, formatter);
     }
 }
