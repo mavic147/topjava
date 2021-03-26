@@ -13,10 +13,4 @@
         <function-class>ru.javawebinar.topjava.util.DateTimeUtil</function-class>
         <function-signature>java.lang.String toString(java.time.LocalDateTime)</function-signature>
     </function>
-
-    <function>
-        <name>toDateTime</name>
-        <function-class>ru.javawebinar.topjava.util.DateTimeUtil</function-class>
-        <function-signature>java.time.LocalDateTime toLocalDateTime(java.lang.String)</function-signature>
-    </function>
 </taglib>
