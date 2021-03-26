@@ -10,18 +10,21 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.web.meal.AbstractMealController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 @Controller
 @RequestMapping("/meals")
-public class JspMealController {
+public class JspMealController extends AbstractMealController {
 
     @Autowired
     private MealService mealService;
@@ -41,37 +44,40 @@ public class JspMealController {
         return "meals";
     }
 
-    @GetMapping ("/new")
-    public ModelAndView newMealView() {
-        return new ModelAndView("mealForm", "meal", new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000));
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("meal", new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), "", 1000));
+        return "mealForm";
+    }
+
+    @GetMapping("/update")
+    public String update(HttpServletRequest request, Model model) {
+        model.addAttribute(super.get(getId(request)));
+        return "mealForm";
+    }
+
+    @GetMapping("/delete")
+    public String delete(HttpServletRequest request) {
+        super.delete(getId(request));
+        return "redirect:/meals";
     }
 
     @PostMapping()
-    public String createMeal(@ModelAttribute("meal") Meal meal, BindingResult result) {
-        int userId = SecurityUtil.authUserId();
-        checkNew(meal);
-        mealService.create(meal, userId);
-        return "meals";
+    public String createOrUpdate(HttpServletRequest request) {
+        Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
+                request.getParameter("description"),
+                Integer.parseInt(request.getParameter("calories")));
+        if (request.getParameter("id").isEmpty()) {
+            super.create(meal);
+        } else {
+            super.update(meal, getId(request));
+        }
+        return "redirect:/meals";
     }
 
-    @GetMapping("/{id}")
-    public ModelAndView updMealView(@PathVariable("id") int id) {
-        int userId = SecurityUtil.authUserId();
-        Meal meal = mealService.get(id, userId);
-        return new ModelAndView("mealForm", "meal", meal);
+    private int getId(HttpServletRequest request) {
+        String paramId = Objects.requireNonNull(request.getParameter("id"));
+        return Integer.parseInt(paramId);
     }
 
-    @PostMapping("/{id}")
-    public String updateMeal(@ModelAttribute("meal") Meal meal) {
-        int userId = SecurityUtil.authUserId();
-        mealService.update(meal, userId);
-        return "meals";
-    }
-
-    @DeleteMapping("?{id}")
-    public String deleteMeal(@PathVariable("id") int id) {
-        int userId = SecurityUtil.authUserId();
-        mealService.delete(id, userId);
-        return "meals";
-    }
 }
