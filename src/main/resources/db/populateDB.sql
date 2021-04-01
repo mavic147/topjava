@@ -1,6 +1,6 @@
-DELETE FROM user_roles;
-DELETE FROM meals;
-DELETE FROM users;
+DELETE FROM user_roles where 1=1;
+DELETE FROM meals where 1=1;
+DELETE FROM users where 1=1;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
 INSERT INTO users (name, email, password)
