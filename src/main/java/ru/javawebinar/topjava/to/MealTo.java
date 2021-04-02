@@ -1,14 +1,10 @@
 package ru.javawebinar.topjava.to;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import ru.javawebinar.topjava.web.json.MealToDeserializer;
-import ru.javawebinar.topjava.web.json.MealToSerializer;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
-@JsonDeserialize(using = MealToDeserializer.class)
-@JsonSerialize(using = MealToSerializer.class)
 public class MealTo {
     private final Integer id;
 
@@ -20,7 +16,10 @@ public class MealTo {
 
     private final boolean excess;
 
-    public MealTo(Integer id, LocalDateTime dateTime, String description, int calories, boolean excess) {
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public MealTo(@JsonProperty("id") Integer id, @JsonProperty("dateTime") LocalDateTime dateTime,
+                  @JsonProperty("description") String description, @JsonProperty("calories") int calories,
+                  @JsonProperty("excess") boolean excess) {
         this.id = id;
         this.dateTime = dateTime;
         this.description = description;
