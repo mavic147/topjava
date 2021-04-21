@@ -10,6 +10,9 @@ import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @Controller
 public class RootController {
@@ -25,8 +28,12 @@ public class RootController {
     }
 
     @GetMapping("/users")
-    public String getUsers(Model model) {
-        model.addAttribute("users", userService.getAll());
+    public String getUsers(Model model) throws IOException {
+//        model.addAttribute("users", userService.getAll());
+        URL url = new URL("http://localhost:8081/topjava/users");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
         return "users";
     }
 
@@ -38,9 +45,13 @@ public class RootController {
     }
 
     @GetMapping("/meals")
-    public String getMeals(Model model) {
-        model.addAttribute("meals",
-                MealsUtil.getTos(mealService.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay()));
+    public String getMeals(Model model) throws IOException {
+//        model.addAttribute("meals",
+//                MealsUtil.getTos(mealService.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay()));
+        URL url = new URL("http://localhost:8081/topjava/meals");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
         return "meals";
     }
 }
