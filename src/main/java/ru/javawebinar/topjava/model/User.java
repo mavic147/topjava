@@ -96,6 +96,15 @@ public class User extends AbstractNamedEntity {
         setRoles(roles);
     }
 
+    public User(Integer id, String name, String email, String password, int caloriesPerDay, Date registered, Collection<Role> roles) {
+        super(id, name);
+        this.email = email;
+        this.password = password;
+        this.caloriesPerDay = caloriesPerDay;
+        this.registered = registered;
+        setRoles(roles);
+    }
+
     public String getEmail() {
         return email;
     }
