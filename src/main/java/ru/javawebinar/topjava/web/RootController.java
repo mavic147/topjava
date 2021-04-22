@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Controller
@@ -40,7 +41,7 @@ public class RootController {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         BufferedReader in = new BufferedReader(
-                new InputStreamReader(connection.getInputStream()));
+                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
         String inputLine;
         StringBuilder content = new StringBuilder();
         while ((inputLine = in.readLine()) != null) {
@@ -53,9 +54,12 @@ public class RootController {
     }
 
     @PostMapping("/users")
-    public String setUser(HttpServletRequest request) {
-        int userId = Integer.parseInt(request.getParameter("userId"));
-        SecurityUtil.setAuthUserId(userId);
+    public String setUser(HttpServletRequest request) throws IOException {
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+//        SecurityUtil.setAuthUserId(userId);
+        URL url = new URL("http://localhost:8081/topjava/users");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
         return "redirect:meals";
     }
 
@@ -67,7 +71,7 @@ public class RootController {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         BufferedReader in = new BufferedReader(
-                new InputStreamReader(connection.getInputStream()));
+                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
         String inputLine;
         StringBuilder content = new StringBuilder();
         while ((inputLine = in.readLine()) != null) {
