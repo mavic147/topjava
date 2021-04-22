@@ -78,6 +78,7 @@ public class RootController {
             content.append(inputLine);
         }
         List<MealTo> mealsTo = JsonUtil.readValues(content.toString(), MealTo.class);
+        in.close();
         model.addAttribute("meals", mealsTo);
         return "meals";
     }

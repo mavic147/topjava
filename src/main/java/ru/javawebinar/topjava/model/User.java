@@ -17,7 +17,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import ru.javawebinar.topjava.web.json.MealToDeserializer;
 import ru.javawebinar.topjava.web.json.UserDeserializer;
 
 import javax.persistence.*;

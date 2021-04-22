@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.IntNode;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,16 +27,14 @@ public class UserDeserializer extends StdDeserializer<User> {
         super(vc);
     }
 
-    public Set<Role> deserializeUserRoles(JsonParser jp) throws IOException {
-        JsonNode node = jp.getCodec().readTree(jp);
+    public Set<Role> deserializeUserRoles(String jsonRoles) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        String jsonRoles = node.get("roles").asText();
-        String[] stringRoles = mapper.readValue(jsonRoles, String[].class);
-        Set<String> setStringRoles = Set.of(stringRoles);
+        CollectionType typeReference =
+                TypeFactory.defaultInstance().constructCollectionType(Set.class, String.class);
+        Set<String> stringRoles = mapper.readValue(jsonRoles, typeReference);
         Set<Role> roles = new HashSet<>();
-        for (String role : setStringRoles) {
-            Role roleEnum = Role.valueOf(role);
-            roles.add(roleEnum);
+        for (String role : stringRoles) {
+            roles.add(Role.valueOf(role));
         }
         return roles;
     }
@@ -50,14 +48,8 @@ public class UserDeserializer extends StdDeserializer<User> {
         String email = node.get("email").asText();
         String password = node.get("password").asText();
         int caloriesPerDay = (Integer) ((IntNode) node.get("caloriesPerDay")).numberValue();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-        Date registered = null;
-        try {
-            registered = formatter.parse(node.get("registered").asText());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Set<Role> roles = deserializeUserRoles(jp);
+        Date registered = new Date(node.get("registered").asLong());
+        Set<Role> roles = deserializeUserRoles(node.get("roles").toString());
         return new User(id, name, email, password, caloriesPerDay, registered, roles);
     }
 }

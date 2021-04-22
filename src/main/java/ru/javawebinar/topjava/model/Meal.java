@@ -6,7 +6,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
 import ru.javawebinar.topjava.web.json.MealDeserializer;
-import ru.javawebinar.topjava.web.json.MealToDeserializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
