@@ -10,18 +10,22 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.hibernate.annotations.*;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import ru.javawebinar.topjava.web.json.MealToDeserializer;
+import ru.javawebinar.topjava.web.json.UserDeserializer;
 
 import javax.persistence.*;
 import java.util.*;
 
 import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
 
+@JsonDeserialize(using = UserDeserializer.class)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @NamedQueries({
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),

@@ -1,7 +1,11 @@
 package ru.javawebinar.topjava.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ru.javawebinar.topjava.web.json.MealToDeserializer;
+
 import java.time.LocalDateTime;
 
+@JsonDeserialize(using = MealToDeserializer.class)
 public class MealTo {
     private final Integer id;
 
