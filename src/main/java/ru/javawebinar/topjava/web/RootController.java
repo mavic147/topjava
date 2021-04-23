@@ -76,7 +76,6 @@ public class RootController {
         int length = out.length;
         connection.setFixedLengthStreamingMode(length);
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        connection.connect();
         OutputStream os = connection.getOutputStream();
         os.write(out);
         os.flush();
