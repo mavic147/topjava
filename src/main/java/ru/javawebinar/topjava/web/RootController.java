@@ -62,23 +62,30 @@ public class RootController {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
+//        connection.setRequestProperty("Content-Type", "application/json; utf-8");
+//        String jsonInputString = "{\"userId\":\"100001\"}" ;
+//        try(OutputStream os = connection.getOutputStream()) {
+//            byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+//            os.write(input, 0, input.length);
+//        }
 
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("userId", userId);
-        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-        out.writeBytes(HttpUtil.getParamsString(parameters));
+
+//        Map<String, String> parameters = new HashMap<>();
+//        parameters.put("userId", userId);
+//        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+//        out.writeBytes(HttpUtil.getParamsString(parameters));
 //        out.flush();
 //        out.close();
 
-//        Map<String,String> arguments = new HashMap<>();
-//        arguments.put("userId", userId);
-//        byte[] out = HttpUtil.getParamsString(arguments).getBytes(StandardCharsets.UTF_8);
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("userId", userId);
+        byte[] out = HttpUtil.getParamsString(arguments).getBytes(StandardCharsets.UTF_8);
 //        byte[] out = "{\"userId\":\"100001\"}" .getBytes(StandardCharsets.UTF_8);
-//        int length = out.length;
-//        connection.setFixedLengthStreamingMode(length);
-//        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-//        OutputStream os = connection.getOutputStream();
-//        os.write(out);
+        int length = out.length;
+        connection.setFixedLengthStreamingMode(length);
+        connection.setRequestProperty("Content-Type", "text/binary; charset=UTF-8");
+        OutputStream os = connection.getOutputStream();
+        os.write(out);
 //        os.flush();
 //        BufferedReader in = new BufferedReader(
 //                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));

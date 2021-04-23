@@ -138,7 +138,7 @@ public class JspMealController extends AbstractMealController {
         byte[] out = HttpUtil.getParamsString(arguments).getBytes(StandardCharsets.UTF_8);
         int length = out.length;
         connection.setFixedLengthStreamingMode(length);
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        connection.setRequestProperty("Content-Type", "application/form-data; charset=UTF-8");
         OutputStream os = connection.getOutputStream();
         os.write(out);
         os.flush();
