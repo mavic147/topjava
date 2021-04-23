@@ -9,17 +9,17 @@ import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.service.UserService;
-import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.HttpUtil;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class RootController {
@@ -57,9 +57,30 @@ public class RootController {
     public String setUser(HttpServletRequest request) throws IOException {
 //        int userId = Integer.parseInt(request.getParameter("userId"));
 //        SecurityUtil.setAuthUserId(userId);
+        String userId = request.getParameter("userId");
         URL url = new URL("http://localhost:8081/topjava/users");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+
+//        Map<String, String> parameters = new HashMap<>();
+//        parameters.put("userId", userId);
+//        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+//        out.writeBytes(HttpUtil.getParamsString(parameters));
+//        out.flush();
+//        out.close();
+
+        Map<String,String> arguments = new HashMap<>();
+        arguments.put("userId", userId);
+        byte[] out = HttpUtil.getParamsString(arguments).getBytes(StandardCharsets.UTF_8);
+        int length = out.length;
+        connection.setFixedLengthStreamingMode(length);
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        connection.connect();
+        OutputStream os = connection.getOutputStream();
+        os.write(out);
+        os.flush();
+        os.close();
         return "redirect:meals";
     }
 
