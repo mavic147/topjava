@@ -63,23 +63,33 @@ public class RootController {
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
 
-//        Map<String, String> parameters = new HashMap<>();
-//        parameters.put("userId", userId);
-//        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-//        out.writeBytes(HttpUtil.getParamsString(parameters));
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("userId", userId);
+        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+        out.writeBytes(HttpUtil.getParamsString(parameters));
 //        out.flush();
 //        out.close();
 
-        Map<String,String> arguments = new HashMap<>();
-        arguments.put("userId", userId);
-        byte[] out = HttpUtil.getParamsString(arguments).getBytes(StandardCharsets.UTF_8);
-        int length = out.length;
-        connection.setFixedLengthStreamingMode(length);
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        OutputStream os = connection.getOutputStream();
-        os.write(out);
-        os.flush();
-        os.close();
+//        Map<String,String> arguments = new HashMap<>();
+//        arguments.put("userId", userId);
+//        byte[] out = HttpUtil.getParamsString(arguments).getBytes(StandardCharsets.UTF_8);
+//        byte[] out = "{\"userId\":\"100001\"}" .getBytes(StandardCharsets.UTF_8);
+//        int length = out.length;
+//        connection.setFixedLengthStreamingMode(length);
+//        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+//        OutputStream os = connection.getOutputStream();
+//        os.write(out);
+//        os.flush();
+//        BufferedReader in = new BufferedReader(
+//                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+//        String inputLine;
+//        StringBuilder content = new StringBuilder();
+//        while ((inputLine = in.readLine()) != null) {
+//            content.append(inputLine);
+//        }
+//        connection.getInputStream();
+//        in.close();
+//        os.close();
         return "redirect:meals";
     }
 
@@ -87,7 +97,7 @@ public class RootController {
     public String getMeals(Model model) throws IOException {
 //        model.addAttribute("meals",
 //                MealsUtil.getTos(mealService.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay()));
-        URL url = new URL("http://localhost:8081/topjava/meals");
+        URL url = new URL("http://localhost:8081/topjava/meals/");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         BufferedReader in = new BufferedReader(

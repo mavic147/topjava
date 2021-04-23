@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -109,17 +110,54 @@ public class JspMealController extends AbstractMealController {
     }
 
     @PostMapping
-    public String updateOrCreate(HttpServletRequest request) {
-        Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
-                request.getParameter("description"),
-                Integer.parseInt(request.getParameter("calories")));
+    public String updateOrCreate(HttpServletRequest request) throws IOException {
+//        Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
+//                request.getParameter("description"),
+//                Integer.parseInt(request.getParameter("calories")));
+//
+//        if (request.getParameter("id").isEmpty()) {
+//            super.create(meal);
+//        } else {
+//            super.update(meal, getId(request));
+//        }
 
-        if (request.getParameter("id").isEmpty()) {
-            super.create(meal);
-        } else {
-            super.update(meal, getId(request));
+        String id = request.getParameter("id");
+        String dateTime = request.getParameter("dateTime");
+        String description = request.getParameter("description");
+        String calories = request.getParameter("calories");
+
+        URL url = new URL("http://localhost:8081/topjava/meals/");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+        Map<String, String> arguments = new HashMap<>();
+        arguments.put("id", id);
+        arguments.put("dateTime", dateTime);
+        arguments.put("description", dateTime);
+        arguments.put("calories", dateTime);
+        byte[] out = HttpUtil.getParamsString(arguments).getBytes(StandardCharsets.UTF_8);
+        int length = out.length;
+        connection.setFixedLengthStreamingMode(length);
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        OutputStream os = connection.getOutputStream();
+        os.write(out);
+        os.flush();
+        os.close();
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+        String inputLine;
+        StringBuilder content = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
         }
-        return "redirect:/meals";
+        try {
+            Meal meal = JsonUtil.readValue(content.toString(), Meal.class);
+        } catch (IllegalArgumentException e) {
+
+        } finally {
+            return "redirect:/meals";
+        }
     }
 
     @GetMapping("/filter")
