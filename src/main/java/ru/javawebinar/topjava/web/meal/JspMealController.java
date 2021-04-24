@@ -125,25 +125,17 @@ public class JspMealController extends AbstractMealController {
         String dateTime = request.getParameter("dateTime");
         String description = request.getParameter("description");
         String calories = request.getParameter("calories");
-
         URL url = new URL("http://localhost:8081/topjava/meals/");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/json; utf-8");
         connection.setDoOutput(true);
-        Map<String, String> arguments = new HashMap<>();
-        arguments.put("id", id);
-        arguments.put("dateTime", dateTime);
-        arguments.put("description", dateTime);
-        arguments.put("calories", dateTime);
-        byte[] out = HttpUtil.getParamsString(arguments).getBytes(StandardCharsets.UTF_8);
-        int length = out.length;
-        connection.setFixedLengthStreamingMode(length);
-        connection.setRequestProperty("Content-Type", "application/form-data; charset=UTF-8");
-        OutputStream os = connection.getOutputStream();
-        os.write(out);
-        os.flush();
-        os.close();
-
+        String jsonInputString = String.format("{\"id\":\"%s\", \"dateTime\":\"%s\", \"description\":\"%s\", " +
+                "\"calories\":\"%s\"}", id, dateTime, description, calories);
+        try(OutputStream os = connection.getOutputStream()) {
+            byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+            os.write(input, 0, input.length);
+        }
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
         String inputLine;
@@ -151,6 +143,7 @@ public class JspMealController extends AbstractMealController {
         while ((inputLine = in.readLine()) != null) {
             content.append(inputLine);
         }
+        in.close();
         try {
             Meal meal = JsonUtil.readValue(content.toString(), Meal.class);
         } catch (IllegalArgumentException e) {
