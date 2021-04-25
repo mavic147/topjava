@@ -60,20 +60,10 @@ public class JspMealController extends AbstractMealController {
     public String update(HttpServletRequest request, Model model) throws IOException {
 //        model.addAttribute("meal", super.get(getId(request)));
         String id = request.getParameter("id");
-        URL url = new URL("http://localhost:8081/topjava/meals/update");
+        String dynamicURL = String.format("http://localhost:8081/topjava/meals/update?id=%s", id);
+        URL url = new URL(dynamicURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setDoOutput(true);
-        Map<String,String> arguments = new HashMap<>();
-        arguments.put("id", id);
-        byte[] out = HttpUtil.getParamsString(arguments).getBytes(StandardCharsets.UTF_8);
-        int length = out.length;
-        connection.setFixedLengthStreamingMode(length);
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        OutputStream os = connection.getOutputStream();
-        os.write(out);
-        os.flush();
-        os.close();
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
@@ -144,7 +134,7 @@ public class JspMealController extends AbstractMealController {
         }
         in.close();
         try {
-            Meal meal = JsonUtil.readValue(content.toString(), Meal.class);
+            JsonUtil.readValue(content.toString(), Meal.class);
         } catch (IllegalArgumentException e) {
 
         } finally {
