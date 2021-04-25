@@ -41,20 +41,18 @@ public class JspMealController extends AbstractMealController {
     public String delete(HttpServletRequest request) throws IOException {
 //        super.delete(getId(request));
         String id = request.getParameter("id");
-        URL url = new URL("http://localhost:8081/topjava/meals/delete");
+        String dynamicURL = String.format("http://localhost:8081/topjava/meals/delete?id=%s", id);
+        URL url = new URL(dynamicURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setDoOutput(true);
-        Map<String,String> arguments = new HashMap<>();
-        arguments.put("id", id);
-        byte[] out = HttpUtil.getParamsString(arguments).getBytes(StandardCharsets.UTF_8);
-        int length = out.length;
-        connection.setFixedLengthStreamingMode(length);
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        OutputStream os = connection.getOutputStream();
-        os.write(out);
-        os.flush();
-        os.close();
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+        String inputLine;
+        StringBuilder content = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
         return "redirect:/meals";
     }
 
