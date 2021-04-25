@@ -166,23 +166,11 @@ public class JspMealController extends AbstractMealController {
         String endDate = request.getParameter("endDate");
         String startTime = request.getParameter("startTime");
         String endTime = request.getParameter("endTime");
-        URL url = new URL("http://localhost:8081/topjava/meals/filter");
+        String dynamicURL = String.format("http://localhost:8081/topjava/meals/filter?startDate=%s&endDate=%s&startTime=%s&endTime=%s",
+                startDate, endDate, startTime, endTime);
+        URL url = new URL(dynamicURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setDoOutput(true);
-        Map<String,String> arguments = new HashMap<>();
-        arguments.put("startDate", startDate);
-        arguments.put("endDate", endDate);
-        arguments.put("startTime", startTime);
-        arguments.put("endTime", endTime);
-        byte[] out = HttpUtil.getParamsString(arguments).getBytes(StandardCharsets.UTF_8);
-        int length = out.length;
-        connection.setFixedLengthStreamingMode(length);
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        OutputStream os = connection.getOutputStream();
-        os.write(out);
-        os.flush();
-        os.close();
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
