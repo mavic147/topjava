@@ -9,7 +9,6 @@ import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.service.UserService;
-import ru.javawebinar.topjava.util.HttpUtil;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +16,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class RootController {
@@ -37,7 +34,7 @@ public class RootController {
     @GetMapping("/users")
     public String getUsers(Model model) throws IOException {
 //        model.addAttribute("users", userService.getAll());
-        URL url = new URL("http://localhost:8081/topjava/users");
+        URL url = new URL("http://localhost:8081/topjava/users/");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         BufferedReader in = new BufferedReader(
@@ -58,12 +55,12 @@ public class RootController {
 //        int userId = Integer.parseInt(request.getParameter("userId"));
 //        SecurityUtil.setAuthUserId(userId);
         String userId = request.getParameter("userId");
-        URL url = new URL("http://localhost:8081/topjava/users");
+        URL url = new URL("http://localhost:8081/topjava/users/");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/json; utf-8");
         connection.setDoOutput(true);
-        String jsonInputString = String.format("{\"userId\":\"%s\"}", userId) ;
+        String jsonInputString = String.format("{\"userId\":\"%s\"}", userId);
         try(OutputStream os = connection.getOutputStream()) {
             byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
