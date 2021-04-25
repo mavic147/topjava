@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
@@ -122,7 +123,7 @@ public class JspMealController extends AbstractMealController {
 //        }
 
         String id = request.getParameter("id");
-        String dateTime = request.getParameter("dateTime");
+        long dateTime = LocalDateTime.parse(request.getParameter("dateTime")).toEpochSecond(ZoneOffset.UTC);
         String description = request.getParameter("description");
         String calories = request.getParameter("calories");
         URL url = new URL("http://localhost:8081/topjava/meals/");
