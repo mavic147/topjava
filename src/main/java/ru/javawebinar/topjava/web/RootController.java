@@ -34,7 +34,7 @@ public class RootController {
     @GetMapping("/users")
     public String getUsers(Model model) throws IOException {
 //        model.addAttribute("users", userService.getAll());
-        URL url = new URL("http://localhost:8081/topjava/users/");
+        URL url = new URL("http://localhost:8081/topjava/users");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         BufferedReader in = new BufferedReader(
@@ -55,7 +55,7 @@ public class RootController {
 //        int userId = Integer.parseInt(request.getParameter("userId"));
 //        SecurityUtil.setAuthUserId(userId);
         String userId = request.getParameter("userId");
-        URL url = new URL("http://localhost:8081/topjava/users/");
+        URL url = new URL("http://localhost:8081/topjava/users");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/json; utf-8");
